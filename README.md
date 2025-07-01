@@ -1,73 +1,92 @@
-# Welcome to your Lovable project
+# 약 추천 데모 앱 (Pill Recommendation Demo App) 개발
 
-## Project info
+## [APP URL](https://pill-pal-quick-aid.lovable.app/)
 
-**URL**: https://lovable.dev/projects/e501070b-be4d-4d2f-bf23-ccddb15b8b95
+## 1. 프로젝트 목표 (Project Goal)
 
-## How can I edit this code?
+사용자가 자신의 현재 건강 상태를 입력하면, 예상 질병을 알려주고 그에 맞는 일반의약품을 추천합니다. 더 나아가, 추천된 약을 구매할 수 있는 가장 가까운 약국의 위치 정보를 제공하여 사용자가 신속하게 초기 대응을 할 수 있도록 돕는 데모 애플리케이션을 제작합니다.
 
-There are several ways of editing your application.
+## 2. 페르소나 (Persona)
 
-**Use Lovable**
+- **이름:** 이동엽
+- **나이:** 26세
+- **성별:** 남성
+- **직업:** 개발자
+- **라이프스타일:** 매일 야근과 과로에 시달려 병원 갈 시간을 내기 어렵습니다.
+- **핵심 니즈 (Needs):**
+    - 몸이 아플 때, 병원에 가지 않고도 자신의 상태(예상 질병)를 빠르게 파악하고 싶습니다.
+    - 병원 방문 전, 증상을 완화할 수 있는 적절한 약을 추천받고 싶습니다.
+    - 추천받은 약을 바로 구매할 수 있는 주변 약국 정보를 얻고 싶습니다.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e501070b-be4d-4d2f-bf23-ccddb15b8b95) and start prompting.
+## 3. 사용자 시나리오 (User Scenario)
 
-Changes made via Lovable will be committed automatically to this repo.
+**상황:** 개발자 이동엽(26세) 씨는 잦은 야근으로 과로한 상태입니다. 어제부터 배가 아프고 열이 나지만, 바쁜 프로젝트 일정 때문에 병원에 갈 엄두를 내지 못하고 있습니다. 증상이 심해지자 급하게 약이라도 먹어야겠다고 생각합니다.
 
-**Use your preferred IDE**
+**목표:** 약 추천 앱을 사용하여 자신의 예상 질병을 확인하고, 그에 맞는 약과 해당 약을 보유한 주변 약국을 추천받아 신속하게 대처한다.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+**시나리오 흐름:**
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1. 이동엽은 스마트폰에서 '약 추천 앱'을 실행합니다.
+2. 메인 화면에 있는 입력창에 자신의 증상 "어제 뭘 잘못 먹었는지 계속 배가 아프고, 몸에서 열이나. 몸에 힘도 없어."라고 입력합니다.
+3. 앱은 입력된 증상을 분석하여 "장염이 의심됩니다."라는 예상 질병을 보여줍니다.
+4. 이어서, 장염 증상 완화에 적합한 일반의약품 '스멕타'와 '타이레놀'을 추천합니다.
+5. 마지막으로, 현재 위치를 기반으로 '스멕타'와 '타이레놀'을 모두 보유한 가장 가까운 '튼튼약국', '희망약국'의 위치를 지도에 표시해 줍니다.
 
-Follow these steps:
+## 4. 핵심 기능 요구사항 (Core Feature Requirements)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- **요구사항 1: 증상 기반 질병 예측 기능**
+    - 사용자가 텍스트로 자신의 건강 상태 및 증상을 입력할 수 있는 UI를 제공해야 합니다.
+    - 입력된 증상 텍스트를 분석하여 가장 가능성이 높은 질병을 예측하고 결과를 사용자에게 보여줘야 합니다.
+- **요구사항 2: 질병 맞춤 약 추천 기능**
+    - 예측된 질병에 따라, 처방전 없이 구매할 수 있는 일반의약품을 1개 이상 추천해야 합니다.
+    - 추천 약의 이름과 효능을 간략하게 표시해야 합니다.
+- **요구사항 3: 주변 약국 재고 확인 및 위치 안내 기능**
+    - 추천된 약의 재고가 있는 주변 약국 정보를 API 또는 목업 데이터를 통해 확인해야 합니다.
+    - 재고가 확인된 약국들의 목록과 위치를 지도 위에 시각적으로 표시하여 사용자에게 추천해야 합니다.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 5. 사용자 스토리 및 인수 조건 (User Story & Acceptance Criteria)
 
-# Step 3: Install the necessary dependencies.
-npm i
+- **사용자 스토리 (As a... I want to... so that...)**
+    
+    > 바쁜 직장인으로서, 나는 몸이 아플 때 병원에 가지 않고도 내 증상에 맞는 예상 질병과 약을 추천받고, 그 약이 있는 주변 약국 위치까지 한 번에 안내받고 싶다. 이를 통해 신속하게 응급 처치를 하여 건강을 챙기고 싶다.
+    > 
+- **인수 조건 (Acceptance Criteria)**
+    
+    > Given: 사용자가 약 추천 앱의 메인 화면에 접속했을 때,When: 자신의 증상을 텍스트로 입력하고 '결과 확인' 버튼을 눌렀을 때,Then: 앱은 입력된 정보를 바탕으로 ①예상 질병, ②추천 약, ③해당 약을 구매할 수 있는 주변 약국 위치를 한 화면에 명확하게 제공해야 한다.
+    > 
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 6. 핵심 가치 제안 (Core Value Proposition)
 
-**Edit a file directly in GitHub**
+- **즉각적인 건강 상태 분석:** 병원에 가지 않고도 내 증상을 통해 예상 질병을 빠르게 파악할 수 있습니다.
+- **직관적인 사용성:** 복잡한 과정 없이, 증상을 입력하는 간단한 행동만으로 필요한 모든 정보를 얻을 수 있습니다.
+- **신속한 문제 해결:** 아플 때 필요한 약과 약국 정보를 한 번에 제공하여 사용자의 빠른 초기 대응을 돕습니다.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+---
 
-**Use GitHub Codespaces**
+### **Lovable을 위한 실행 예시 (Example for Lovable)**
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+**사용자 입력:**
 
-## What technologies are used for this project?
+> "어제 뭘 잘못 먹었는지, 계속 배가 아프고, 몸에서 열이나, 몸에 힘도 없어"
+> 
 
-This project is built with:
+**앱의 예상 출력:**
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/e501070b-be4d-4d2f-bf23-ccddb15b8b95) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+> 예상 질병
+장염이 의심됩니다.
+> 
+> 
+> ---
+> 
+> **추천 약**
+> 
+> - **스멕타:** 설사 증상 완화
+> - **타이레놀:** 발열 및 통증 완화
+> 
+> ---
+> 
+> **구매 가능한 주변 약국**
+> 
+> - [지도 표시]
+> - 튼튼약국 (250m)
+> - 희망약국 (400m)
