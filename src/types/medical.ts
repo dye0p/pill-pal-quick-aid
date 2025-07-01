@@ -13,9 +13,17 @@ export interface Pharmacy {
   lng: number;
 }
 
+export interface AlternativeDisease {
+  name: string;
+  probability: string;
+  description: string;
+}
+
 export interface MedicalRecommendation {
+  symptoms: string;
   disease: string;
   description: string;
+  alternativeDiseases: AlternativeDisease[];
   medicines: Medicine[];
   pharmacies: Pharmacy[];
 }

@@ -29,6 +29,22 @@ const RecommendationResult: React.FC<RecommendationResultProps> = ({
         </div>
       </div>
 
+      {/* 입력한 증상 */}
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <div className="flex items-center mb-4">
+          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+            <span className="text-2xl">📝</span>
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">입력하신 증상</h3>
+            <p className="text-gray-600">증상 분석 기준</p>
+          </div>
+        </div>
+        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
+          <p className="text-blue-800 leading-relaxed">"{recommendation.symptoms}"</p>
+        </div>
+      </div>
+
       {/* 예상 질병 */}
       <div className="bg-white rounded-xl shadow-lg p-6">
         <div className="flex items-center mb-4">
@@ -36,7 +52,7 @@ const RecommendationResult: React.FC<RecommendationResultProps> = ({
             <span className="text-2xl">🏥</span>
           </div>
           <div>
-            <h3 className="text-xl font-bold text-gray-800">예상 질병</h3>
+            <h3 className="text-xl font-bold text-gray-800">주요 예상 질병</h3>
             <p className="text-gray-600">증상 기반 분석 결과</p>
           </div>
         </div>
@@ -45,6 +61,34 @@ const RecommendationResult: React.FC<RecommendationResultProps> = ({
             {recommendation.disease}
           </h4>
           <p className="text-red-700">{recommendation.description}</p>
+        </div>
+      </div>
+
+      {/* 기타 예상 질병 */}
+      <div className="bg-white rounded-xl shadow-lg p-6">
+        <div className="flex items-center mb-4">
+          <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mr-4">
+            <span className="text-2xl">🔍</span>
+          </div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">기타 가능성 있는 질병</h3>
+            <p className="text-gray-600">추가 고려사항</p>
+          </div>
+        </div>
+        <div className="space-y-3">
+          {recommendation.alternativeDiseases.map((disease, index) => (
+            <div key={index} className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+              <div className="flex justify-between items-start mb-2">
+                <h4 className="text-md font-semibold text-orange-800">
+                  {disease.name}
+                </h4>
+                <span className="text-orange-600 font-bold text-sm bg-orange-100 px-2 py-1 rounded">
+                  {disease.probability}
+                </span>
+              </div>
+              <p className="text-orange-700 text-sm">{disease.description}</p>
+            </div>
+          ))}
         </div>
       </div>
 

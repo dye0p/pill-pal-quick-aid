@@ -2,6 +2,13 @@
 import React, { useEffect, useRef } from 'react';
 import { Pharmacy } from '../types/medical';
 
+// Kakao Map API 타입 정의
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 interface PharmacyMapProps {
   pharmacies: Pharmacy[];
   selectedPharmacy: number | null;

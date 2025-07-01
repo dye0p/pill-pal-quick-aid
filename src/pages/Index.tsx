@@ -25,8 +25,14 @@ const Index = () => {
     // 간단한 키워드 기반 분석
     if (lowerSymptoms.includes('배') && (lowerSymptoms.includes('아프') || lowerSymptoms.includes('통증')) && lowerSymptoms.includes('열')) {
       return {
+        symptoms,
         disease: '장염',
         description: '식중독이나 바이러스로 인한 장염이 의심됩니다.',
+        alternativeDiseases: [
+          { name: '식중독', probability: '30%', description: '상한 음식 섭취로 인한 급성 위장 장애' },
+          { name: '위장 감기', probability: '25%', description: '바이러스성 위장관염으로 구토와 설사 동반' },
+          { name: '과민성 대장 증후군', probability: '15%', description: '스트레스나 특정 음식으로 인한 장 기능 이상' }
+        ],
         medicines: [
           { name: '스멕타', effect: '설사 증상 완화 및 장 보호', price: '8,000원' },
           { name: '타이레놀', effect: '발열 및 통증 완화', price: '6,500원' }
@@ -39,8 +45,14 @@ const Index = () => {
       };
     } else if (lowerSymptoms.includes('머리') && lowerSymptoms.includes('아프')) {
       return {
-        disease: '두통',
+        symptoms,
+        disease: '긴장성 두통',
         description: '스트레스나 피로로 인한 긴장성 두통이 의심됩니다.',
+        alternativeDiseases: [
+          { name: '편두통', probability: '35%', description: '혈관성 두통으로 맥박에 맞춰 욱신거리는 통증' },
+          { name: '군발성 두통', probability: '20%', description: '일정 기간 동안 집중적으로 발생하는 심한 두통' },
+          { name: '목 근육 경직', probability: '25%', description: '목과 어깨 근육 긴장으로 인한 연관 두통' }
+        ],
         medicines: [
           { name: '타이레놀', effect: '두통 및 통증 완화', price: '6,500원' },
           { name: '낙센', effect: '염증성 두통 완화', price: '12,000원' }
@@ -52,8 +64,14 @@ const Index = () => {
       };
     } else if (lowerSymptoms.includes('기침') || lowerSymptoms.includes('목')) {
       return {
-        disease: '감기',
+        symptoms,
+        disease: '감기 (상기도 감염)',
         description: '바이러스성 상기도 감염(감기)이 의심됩니다.',
+        alternativeDiseases: [
+          { name: '인후염', probability: '40%', description: '목구멍 염증으로 인한 통증과 기침' },
+          { name: '기관지염', probability: '25%', description: '기관지 염증으로 인한 지속적인 기침' },
+          { name: '알레르기성 비염', probability: '20%', description: '알레르기 반응으로 인한 기침과 콧물' }
+        ],
         medicines: [
           { name: '판피린', effect: '감기 증상 종합 완화', price: '9,800원' },
           { name: '스트렙실', effect: '목 통증 및 염증 완화', price: '7,200원' }
@@ -65,8 +83,14 @@ const Index = () => {
       };
     } else {
       return {
+        symptoms,
         disease: '일반적인 컨디션 난조',
         description: '충분한 휴식과 수분 섭취가 필요해 보입니다.',
+        alternativeDiseases: [
+          { name: '만성 피로 증후군', probability: '30%', description: '장기간 지속되는 피로와 무기력감' },
+          { name: '스트레스성 신체화 장애', probability: '25%', description: '정신적 스트레스가 신체 증상으로 나타나는 상태' },
+          { name: '영양 결핍', probability: '20%', description: '필수 영양소 부족으로 인한 전반적 컨디션 저하' }
+        ],
         medicines: [
           { name: '비타민C', effect: '면역력 강화 및 피로 회복', price: '15,000원' },
           { name: '종합비타민', effect: '전체적인 영양 보충', price: '18,000원' }
