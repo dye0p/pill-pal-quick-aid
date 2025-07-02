@@ -1,12 +1,14 @@
 
 import React, { useState } from 'react';
+import { ArrowLeft } from 'lucide-react';
 
 interface SymptomInputProps {
   onSubmit: (symptoms: string) => void;
   isLoading: boolean;
+  onBack?: () => void;
 }
 
-const SymptomInput: React.FC<SymptomInputProps> = ({ onSubmit, isLoading }) => {
+const SymptomInput: React.FC<SymptomInputProps> = ({ onSubmit, isLoading, onBack }) => {
   const [symptoms, setSymptoms] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -25,6 +27,18 @@ const SymptomInput: React.FC<SymptomInputProps> = ({ onSubmit, isLoading }) => {
   return (
     <div className="bg-white rounded-2xl shadow-xl p-8">
       <div className="text-center mb-8">
+        {onBack && (
+          <div className="flex items-center mb-4">
+            <button
+              onClick={onBack}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              disabled={isLoading}
+            >
+              <ArrowLeft className="h-5 w-5 text-gray-600" />
+            </button>
+            <span className="text-sm text-gray-500 ml-2">입력 방식 선택으로 돌아가기</span>
+          </div>
+        )}
         <h2 className="text-2xl font-bold text-gray-800 mb-2">
           증상을 자세히 알려주세요
         </h2>

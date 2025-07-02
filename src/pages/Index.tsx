@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import SymptomInputSelector from '../components/SymptomInputSelector';
 import SymptomInput from '../components/SymptomInput';
+import ChatbotSymptomInput from '../components/ChatbotSymptomInput';
+import ChecklistSymptomInput from '../components/ChecklistSymptomInput';
 import RecommendationResult from '../components/RecommendationResult';
 import UserProfile from '../components/UserProfile';
 import { MedicalRecommendation, UserProfile as UserProfileType, RiskAssessment } from '../types/medical';
@@ -9,6 +12,7 @@ const Index = () => {
   const [recommendation, setRecommendation] = useState<MedicalRecommendation | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const [selectedInputMethod, setSelectedInputMethod] = useState<'text' | 'chatbot' | 'checklist' | null>(null);
   const [userProfile, setUserProfile] = useState<UserProfileType>({
     allergies: [],
     conditions: [],
@@ -370,6 +374,15 @@ const Index = () => {
 
   const handleReset = () => {
     setRecommendation(null);
+    setSelectedInputMethod(null);
+  };
+
+  const handleMethodSelect = (method: 'text' | 'chatbot' | 'checklist') => {
+    setSelectedInputMethod(method);
+  };
+
+  const handleBackToSelector = () => {
+    setSelectedInputMethod(null);
   };
 
   return (
@@ -380,7 +393,7 @@ const Index = () => {
           <div className="flex justify-between items-center mb-6">
             <div></div>
             <h1 className="text-4xl font-bold text-teal-800">
-              💊 스마트 약 추천 앱 v2.0
+              💊 스마트 약 추천 앱 v2.1
             </h1>
             <button
               onClick={() => setShowProfile(true)}
@@ -391,7 +404,7 @@ const Index = () => {
             </button>
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            안전한 증상 분석과 개인 맞춤형 일반의약품 추천, 그리고 주변 판매처 정보를 한 번에 제공합니다.
+            다양한 입력 방식으로 증상을 알려주시면, 안전한 분석과 개인 맞춤형 약 추천, 주변 판매처 정보를 제공합니다.
           </p>
           
           {/* 프로필 요약 */}
@@ -417,7 +430,17 @@ const Index = () => {
         {/* 메인 콘텐츠 */}
         <div className="max-w-4xl mx-auto">
           {!recommendation ? (
-            <SymptomInput onSubmit={handleSymptomSubmit} isLoading={isLoading} />
+            <>
+              {!selectedInputMethod ? (
+                <SymptomInputSelector onMethodSelect={handleMethodSelect} />
+              ) : selectedInputMethod === 'text' ? (
+                <SymptomInput onSubmit={handleSymptomSubmit} isLoading={isLoading} onBack={handleBackToSelector} />
+              ) : selectedInputMethod === 'chatbot' ? (
+                <ChatbotSymptomInput onComplete={handleSymptomSubmit} isLoading={isLoading} onBack={handleBackToSelector} />
+              ) : selectedInputMethod === 'checklist' ? (
+                <ChecklistSymptomInput onComplete={handleSymptomSubmit} isLoading={isLoading} onBack={handleBackToSelector} />
+              ) : null}
+            </>
           ) : (
             <RecommendationResult 
               recommendation={recommendation} 
@@ -436,7 +459,7 @@ const Index = () => {
             </div>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-yellow-800">
-                ⚠️ v2.0 주요 개선사항
+                ⚠️ v2.1 주요 개선사항
               </h3>
               <div className="mt-2 text-sm text-yellow-700">
                 <p className="mb-2">
@@ -444,7 +467,8 @@ const Index = () => {
                   실제 의학적 진단을 대체할 수 없으며, 심각한 증상이 지속되거나 악화될 경우 반드시 전문의와 상담하시기 바랍니다.
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-xs">
-                  <li>위험도 분석 및 응급상황 안내 시스템 추가</li>
+                  <li>다양한 증상 입력 방식 제공 (자유 텍스트, 챗봇, 체크리스트)</li>
+                  <li>위험도 분석 및 응급상황 안내 시스템</li>
                   <li>개인 건강 프로필 기반 맞춤형 추천</li>
                   <li>편의점 포함 확장된 판매처 정보</li>
                   <li>운영시간 및 연락처 정보 제공</li>
