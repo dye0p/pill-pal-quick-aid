@@ -1,4 +1,0 @@
-project_id = "vipipaashdzdjbhtzjgl"
-
-[functions.analyze-symptoms]
-verify_jwt = false
