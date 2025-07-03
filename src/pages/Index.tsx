@@ -5,6 +5,7 @@ import ChatbotSymptomInput from '../components/ChatbotSymptomInput';
 import ChecklistSymptomInput from '../components/ChecklistSymptomInput';
 import RecommendationResult from '../components/RecommendationResult';
 import UserProfile from '../components/UserProfile';
+import LegalDisclaimerModal from '../components/LegalDisclaimerModal';
 import { MedicalRecommendation, UserProfile as UserProfileType, RiskAssessment } from '../types/medical';
 import { User } from 'lucide-react';
 
@@ -13,19 +14,32 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [selectedInputMethod, setSelectedInputMethod] = useState<'text' | 'chatbot' | 'checklist' | null>(null);
+  const [showLegalDisclaimer, setShowLegalDisclaimer] = useState(false);
   const [userProfile, setUserProfile] = useState<UserProfileType>({
     allergies: [],
     conditions: [],
     medications: []
   });
 
-  // 로컬 스토리지에서 사용자 프로필 불러오기
+  // 로컬 스토리지에서 사용자 프로필 불러오기 및 법적 고지 확인
   useEffect(() => {
     const savedProfile = localStorage.getItem('userProfile');
     if (savedProfile) {
       setUserProfile(JSON.parse(savedProfile));
     }
+
+    // 법적 고지 동의 여부 확인
+    const hasAcceptedDisclaimer = localStorage.getItem('hasAcceptedLegalDisclaimer');
+    if (!hasAcceptedDisclaimer) {
+      setShowLegalDisclaimer(true);
+    }
   }, []);
+
+  // 법적 고지 동의 처리
+  const handleLegalDisclaimerAccept = () => {
+    localStorage.setItem('hasAcceptedLegalDisclaimer', 'true');
+    setShowLegalDisclaimer(false);
+  };
 
   // 사용자 프로필 저장
   const handleProfileUpdate = (profile: UserProfileType) => {
@@ -203,6 +217,26 @@ const Index = () => {
             operatingHours: '09:00 ~ 18:00',
             isOpen: true,
             currentStatus: '운영 중'
+          },
+          {
+            id: '4',
+            name: '쿠팡',
+            type: 'online_store',
+            operatingHours: '24시간 주문 가능',
+            isOpen: true,
+            currentStatus: '주문 가능',
+            url: 'https://www.coupang.com/np/search?q=스멕타',
+            deliveryInfo: '로켓배송 (당일/익일 배송)'
+          },
+          {
+            id: '5',
+            name: '올리브영 온라인몰',
+            type: 'online_store',
+            operatingHours: '24시간 주문 가능',
+            isOpen: true,
+            currentStatus: '주문 가능',
+            url: 'https://www.oliveyoung.co.kr/store/search/getSearch.do?query=타이레놀',
+            deliveryInfo: '무료배송 (2만원 이상)'
           }
         ]
       };
@@ -393,7 +427,7 @@ const Index = () => {
           <div className="flex justify-between items-center mb-6">
             <div></div>
             <h1 className="text-4xl font-bold text-teal-800">
-              💊 스마트 약 추천 앱 v2.1
+              💊 스마트 약 추천 앱 v2.2
             </h1>
             <button
               onClick={() => setShowProfile(true)}
@@ -459,7 +493,7 @@ const Index = () => {
             </div>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-yellow-800">
-                ⚠️ v2.1 주요 개선사항
+                ⚠️ v2.2 주요 개선사항
               </h3>
               <div className="mt-2 text-sm text-yellow-700">
                 <p className="mb-2">
@@ -467,17 +501,23 @@ const Index = () => {
                   실제 의학적 진단을 대체할 수 없으며, 심각한 증상이 지속되거나 악화될 경우 반드시 전문의와 상담하시기 바랍니다.
                 </p>
                 <ul className="list-disc list-inside space-y-1 text-xs">
-                  <li>다양한 증상 입력 방식 제공 (자유 텍스트, 챗봇, 체크리스트)</li>
-                  <li>위험도 분석 및 응급상황 안내 시스템</li>
-                  <li>개인 건강 프로필 기반 맞춤형 추천</li>
-                  <li>편의점 포함 확장된 판매처 정보</li>
-                  <li>운영시간 및 연락처 정보 제공</li>
+                  <li>서비스 이용 전 필수 법적 고지 및 동의 시스템</li>
+                  <li>온라인 구매처 추가 (쿠팡, 올리브영 등)</li>
+                  <li>개선된 판매처 정보 표시 (오프라인/온라인 구분)</li>
+                  <li>준비 중: AI 기반 증상 분석 (Gemini API)</li>
+                  <li>준비 중: 실시간 위치 기반 지도 서비스</li>
                 </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* 법적 고지 모달 */}
+      <LegalDisclaimerModal 
+        isOpen={showLegalDisclaimer}
+        onAccept={handleLegalDisclaimerAccept}
+      />
 
       {/* 사용자 프로필 모달 */}
       {showProfile && (

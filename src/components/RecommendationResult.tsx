@@ -320,29 +320,59 @@ const RecommendationResult: React.FC<RecommendationResultProps> = ({
                     <span className={`text-xs px-2 py-1 rounded-full ${
                       location.type === 'pharmacy' 
                         ? 'bg-blue-100 text-blue-800' 
-                        : 'bg-purple-100 text-purple-800'
+                        : location.type === 'convenience_store'
+                        ? 'bg-purple-100 text-purple-800'
+                        : 'bg-green-100 text-green-800'
                     }`}>
-                      {location.type === 'pharmacy' ? '약국' : '편의점'}
+                      {location.type === 'pharmacy' ? '약국' : location.type === 'convenience_store' ? '편의점' : '온라인'}
                     </span>
                   </div>
-                  <span className="text-teal-600 font-bold text-sm">
-                    {location.distance}
-                  </span>
+                  {location.distance && (
+                    <span className="text-teal-600 font-bold text-sm">
+                      {location.distance}
+                    </span>
+                  )}
                 </div>
                 
-                <p className="text-gray-600 text-sm mb-2">{location.address}</p>
+                {location.address && (
+                  <p className="text-gray-600 text-sm mb-2">{location.address}</p>
+                )}
                 
-                <div className="flex justify-between items-center text-sm">
-                  <div>
-                    <p className="text-gray-500">📞 {location.phone}</p>
+                {location.type === 'online_store' ? (
+                  <div className="space-y-2 text-sm">
+                    <p className="text-gray-500">🚚 {location.deliveryInfo}</p>
                     <p className="text-gray-500">🕒 {location.operatingHours}</p>
+                    <div className="flex justify-between items-center">
+                      {location.url && (
+                        <a
+                          href={location.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-1 rounded text-xs font-medium transition-colors"
+                        >
+                          🛒 바로가기
+                        </a>
+                      )}
+                      <span className={`font-medium ${
+                        location.isOpen ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        {location.currentStatus}
+                      </span>
+                    </div>
                   </div>
-                  <span className={`font-medium ${
-                    location.isOpen ? 'text-green-600' : 'text-red-600'
-                  }`}>
-                    {location.currentStatus}
-                  </span>
-                </div>
+                ) : (
+                  <div className="flex justify-between items-center text-sm">
+                    <div>
+                      {location.phone && <p className="text-gray-500">📞 {location.phone}</p>}
+                      <p className="text-gray-500">🕒 {location.operatingHours}</p>
+                    </div>
+                    <span className={`font-medium ${
+                      location.isOpen ? 'text-green-600' : 'text-red-600'
+                    }`}>
+                      {location.currentStatus}
+                    </span>
+                  </div>
+                )}
                 
                 <div className="mt-2 flex items-center text-xs text-green-600">
                   <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -354,14 +384,16 @@ const RecommendationResult: React.FC<RecommendationResultProps> = ({
             ))}
           </div>
 
-          {/* 지도 */}
-          <div className="h-96 rounded-lg overflow-hidden border border-gray-200">
-            <PharmacyMap 
-              salesLocations={recommendation.salesLocations}
-              selectedLocation={selectedLocation}
-              onLocationSelect={setSelectedLocation}
-            />
-          </div>
+          {/* 지도 - 오프라인 매장만 표시 */}
+          {recommendation.salesLocations.some(loc => loc.type !== 'online_store') && (
+            <div className="h-96 rounded-lg overflow-hidden border border-gray-200">
+              <PharmacyMap 
+                salesLocations={recommendation.salesLocations.filter(loc => loc.type !== 'online_store')}
+                selectedLocation={selectedLocation}
+                onLocationSelect={setSelectedLocation}
+              />
+            </div>
+          )}
         </div>
       )}
 

@@ -12,15 +12,17 @@ export interface Medicine {
 export interface SalesLocation {
   id: string;
   name: string;
-  type: 'pharmacy' | 'convenience_store';
-  distance: string;
-  address: string;
-  lat: number;
-  lng: number;
-  phone: string;
+  type: 'pharmacy' | 'convenience_store' | 'online_store';
+  distance?: string; // 온라인 스토어는 거리가 없음
+  address?: string; // 온라인 스토어는 주소가 없음
+  lat?: number; // 온라인 스토어는 좌표가 없음
+  lng?: number; // 온라인 스토어는 좌표가 없음
+  phone?: string;
   operatingHours: string;
   isOpen: boolean;
   currentStatus: string; // '운영 중', '영업 종료' 등
+  url?: string; // 온라인 스토어 링크
+  deliveryInfo?: string; // 배송 정보
 }
 
 export interface AlternativeDisease {
