@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PharmacyMap from './PharmacyMap';
 import { MedicalRecommendation } from '../types/medical';
 import { AlertTriangle, Hospital, Info } from 'lucide-react';
 
@@ -384,16 +383,6 @@ const RecommendationResult: React.FC<RecommendationResultProps> = ({
             ))}
           </div>
 
-          {/* 지도 - 오프라인 매장만 표시 */}
-          {recommendation.salesLocations.some(loc => loc.type !== 'online_store') && (
-            <div className="h-96 rounded-lg overflow-hidden border border-gray-200">
-              <PharmacyMap 
-                salesLocations={recommendation.salesLocations.filter(loc => loc.type !== 'online_store')}
-                selectedLocation={selectedLocation}
-                onLocationSelect={setSelectedLocation}
-              />
-            </div>
-          )}
         </div>
       )}
 
